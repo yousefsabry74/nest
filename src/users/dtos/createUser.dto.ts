@@ -1,7 +1,14 @@
-import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { ParseIntPipe } from '@nestjs/common';
+import {
+  IsEmail,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDto {
-  @IsString({ message: 'incorrect username' })
+  @IsString()
   @MinLength(3, { message: 'incorrect username' })
   @MaxLength(10, { message: 'incorrect username' })
   readonly username: string;

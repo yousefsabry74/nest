@@ -5,38 +5,40 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
-  } from '@nestjs/common';
+} from '@nestjs/common';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './user.entity';
+import { UserService } from './users.service';
+import { App_Name } from './app.constant';
 @Controller('users')
 export class UsersController {
-  private readonly users: UserEntity[] = [
-    { id: '1', username: 'yousef', email: 'yousef', country: 'egypt' },
-  ];
+  constructor(
+    private readonly userService: UserService,
+    @Inject(App_Name) private readonly appName,
+  ) {}
+
   @Get()
   find(): UserEntity[] {
-    return this.users;
+    console.log(this.appName);
+    return this.userService.find();
   }
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string): UserEntity | undefined {
-    return this.users.find((el) => el.id === id);
+  findOne(@Param('id') id: string): UserEntity | undefined {
+    return this.userService.findOne(id);
   }
   @Post()
   create(@Body() userData: CreateUserDto) {
-    const newUser: UserEntity = { ...userData, id: '2' };
-    this.users.push(newUser);
-    return newUser;
+    return this.userService.create(userData);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() input: UpdateUserDto) {
-    const userIndex = this.users.findIndex((el) => el.id === id);
-    this.users[userIndex] = { ...this.users[userIndex], ...input };
+    return this.userService.update(id, input);
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
