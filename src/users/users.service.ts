@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { UserResponseDto } from './dtos/user-responseDtodto';
 
 @Injectable()
 export class UserService {
@@ -13,10 +14,10 @@ export class UserService {
   findOne(id: string): UserEntity | undefined {
     return this.users.find((el) => el.id === id);
   }
-  create(userData): UserEntity {
+  create(userData): UserResponseDto {
     const newUser: UserEntity = { ...userData, id: '2' };
     this.users.push(newUser);
-    return newUser;
+    return new UserResponseDto(newUser);
   }
   update(id: string, input: UpdateUserDto): UserEntity {
     const userIndex = this.users.findIndex((el) => el.id === id);

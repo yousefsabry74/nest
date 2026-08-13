@@ -15,6 +15,7 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './users.service';
 import { App_Name } from './app.constant';
+import { UserResponseDto } from './dtos/user-responseDtodto';
 @Controller('users')
 export class UsersController {
   constructor(
@@ -32,7 +33,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
   @Post()
-  create(@Body() userData: CreateUserDto) {
+  create(@Body() userData: CreateUserDto): UserResponseDto {
     return this.userService.create(userData);
   }
 
