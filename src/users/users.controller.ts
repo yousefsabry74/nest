@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  SetMetadata,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { CreateUserDto } from './dtos/createUser.dto';
@@ -24,6 +25,7 @@ export class UsersController {
   ) {}
 
   @Get()
+  @SetMetadata('IS_PUPLIC', true)
   find(): UserEntity[] {
     console.log(this.appName);
     return this.userService.find();
