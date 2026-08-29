@@ -6,6 +6,7 @@ import { CustomHttpGlobalException } from './common/execution-time/exceptions/cu
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalInterceptors(new ExecutionTimeInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -14,7 +15,6 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
-  app.useGlobalInterceptors(new ExecutionTimeInterceptor());
   app.useGlobalFilters(new CustomHttpGlobalException());
   await app.listen(process.env.PORT ?? 3000);
 }
