@@ -16,7 +16,6 @@ import { UserEntity } from './user.entity';
 import { UserService } from './users.service';
 import { App_Name } from './app.constant';
 import { UserResponseDto } from './dtos/user-responseDtodto';
-import { CustomHttpException } from 'src/common/execution-time/custom-http.exception';
 @Controller('users')
 export class UsersController {
   constructor(
@@ -27,7 +26,7 @@ export class UsersController {
   @Get()
   find(): UserEntity[] {
     console.log(this.appName);
-    throw new CustomHttpException();
+    return this.userService.find();
   }
   @Get(':id')
   findOne(@Param('id') id: string): UserEntity | undefined {

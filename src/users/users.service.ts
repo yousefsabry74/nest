@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UserResponseDto } from './dtos/user-responseDtodto';
+import { CustomHttpException } from 'src/common/execution-time/exceptions/custom-http.exception';
 
 @Injectable()
 export class UserService {
@@ -11,8 +12,12 @@ export class UserService {
   find(): UserEntity[] {
     return this.users;
   }
-  findOne(id: string): UserEntity | undefined {
-    return this.users.find((el) => el.id === id);
+  findOne(id: string): UserEntity {
+    const user = this.users.find((el) => el.id === id);
+    if (!user) {
+      throw new CustomHttpException();
+    }
+    return user;
   }
   create(userData): UserResponseDto {
     const newUser: UserEntity = { ...userData, id: '2' };
