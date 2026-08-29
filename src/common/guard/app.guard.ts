@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
+import { App_Is_Public } from 'src/users/app.constant';
 
 @Injectable()
 export class AppGuard implements CanActivate {
@@ -19,9 +20,9 @@ export class AppGuard implements CanActivate {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
     const token = req.header('Authorization')
       ? req.header('Authorization')?.split(' ')[1]
-      : ' ';
+      : '';
     const IsPublic = this.reflector.get<boolean>(
-      'IS_PUPLIC',
+      App_Is_Public,
       context.getHandler(),
     );
     if (IsPublic) {

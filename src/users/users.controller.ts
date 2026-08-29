@@ -15,19 +15,18 @@ import { UpdateUserDto } from './dtos/updateUser.dto';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './users.service';
-import { App_Name } from './app.constant';
+import {  App_Name } from './app.constant';
 import { UserResponseDto } from './dtos/user-responseDtodto';
+import { Public } from 'src/common/decoratores/public.decoratoer';
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly userService: UserService,
     @Inject(App_Name) private readonly appName,
   ) {}
-
   @Get()
-  @SetMetadata('IS_PUPLIC', true)
+  @Public()
   find(): UserEntity[] {
-    console.log(this.appName);
     return this.userService.find();
   }
   @Get(':id')
