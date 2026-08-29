@@ -1,7 +1,14 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { CommonModule } from './common/common.module';
+import { LoggerMiddleware } from './common/logger/logger.middleware';
 @Module({
   imports: [UsersModule, CommonModule],
   exports: [],
@@ -9,4 +16,11 @@ import { CommonModule } from './common/common.module';
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude({ path: 'users/:id', method: RequestMethod.PATCH })
+      .forRoutes('*');
+  }
+}
