@@ -18,15 +18,18 @@ import { UserService } from './users.service';
 import { App_Name } from './app.constant';
 import { UserResponseDto } from './dtos/user-responseDtodto';
 import { Public } from 'src/common/decoratores/public.decoratoer';
+import { ConfigService } from '@nestjs/config';
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly userService: UserService,
     @Inject(App_Name) private readonly appName,
+    private readonly config: ConfigService,
   ) {}
   @Get()
   @Public()
   find(): UserEntity[] {
+    console.log(this.config.get<string>('EMAIL'));
     return this.userService.find();
   }
   @Get(':id')
