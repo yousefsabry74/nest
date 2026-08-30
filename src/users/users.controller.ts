@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Inject,
+  Logger,
   Param,
   Patch,
   Post,
@@ -21,6 +22,8 @@ import { Public } from 'src/common/decoratores/public.decoratoer';
 import { ConfigService } from '@nestjs/config';
 @Controller('users')
 export class UsersController {
+  private readonly logger = new Logger(UsersController.name);
+
   constructor(
     private readonly userService: UserService,
     @Inject(App_Name) private readonly appName,
@@ -29,7 +32,7 @@ export class UsersController {
   @Get()
   @Public()
   find(): UserEntity[] {
-    console.log(this.config.get<string>('EMAIL'));
+    this.logger.log(this.config.get<string>('EMAIL'));
     return this.userService.find();
   }
   @Get(':id')
